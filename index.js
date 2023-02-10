@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { writeFileSync } from 'fs';
+import { appendFileSync } from 'fs';
 
 const API_KEY = process.env.MB_API_KEY;
 
@@ -16,8 +16,14 @@ let messageBodies = []
 const pushMessageBody = text => {
   if (!text) return;
 
+  if (text.includes('Goed dat je even een berichtje')) {
+    console.log('skipping standard message')
+    return
+  }
+
   const withoutNewline = text.replaceAll('\n', '');
 
+  appendFileSync("./result.csv", `${withoutNewline} \n`);
   messageBodies.push(withoutNewline);
 }
 
@@ -83,13 +89,13 @@ async function getConversations(offset = 0) {
 await getConversations();
 
 
-const csv = messageBodies.join('\n');
+// const csv = messageBodies.join('\n');
 
-console.log('written to result.csv');
+// console.log('written to result.csv');
 
 
-try {
-  writeFileSync("./result.csv", csv);
-} catch (err) {
-  console.error(err);
-}
+// try {
+//   writeFileSync("./result.csv", csv);
+// } catch (err) {
+//   console.error(err);
+// }
