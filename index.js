@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { appendFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 
 const API_KEY = process.env.MB_API_KEY;
 
@@ -22,6 +22,7 @@ const pushMessageBody = text => {
 
 
 async function getMessages(conversationId, offset = 0) {
+  console.log('getting messages for conversation', conversationId, 'with pagination', offset);
   const resp = await fetch(`${CONVERSASTIONS_API_URL}/conversations/${conversationId}/messages?limit=${LIMIT}&${offset ? offset : ''}`, {
     headers: {
       Authorization: `AccessKey ${API_KEY}`
@@ -29,7 +30,7 @@ async function getMessages(conversationId, offset = 0) {
   });
   const json = await resp.json();
 
-  console.log('getting messages for conversation', conversationId, offset);
+
   for (let message of json.items) {
     if (message.type === 'text') {
       pushMessageBody(message.content.text);
@@ -41,13 +42,17 @@ async function getMessages(conversationId, offset = 0) {
     }
   }
 
+
   const hasNextPage = (offset + json.count) < json.totalCount;
+
   if (hasNextPage) {
     await getMessages(conversationId, offset + LIMIT);
   }
 }
 
 async function getConversations(offset = 0) {
+  console.log('getting conversations offset', offset);
+
   const resp = await fetch(`${CONVERSASTIONS_API_URL}/conversations?limit=${LIMIT}&${offset}`, {
     headers: {
       Authorization: `AccessKey ${API_KEY}`
@@ -63,8 +68,6 @@ async function getConversations(offset = 0) {
   await Promise.all(
     messages
   );
-
-  console.log('conversations', json.offset + json.count, json.totalCount);
 
   const hasNextPage = (offset + json.count) < json.totalCount;
   if (hasNextPage) {
@@ -82,7 +85,7 @@ console.log('written to result.csv');
 
 
 try {
-  appendFileSync("./result.csv", csv);
+  writeFileSync("./result.csv", csv);
 } catch (err) {
   console.error(err);
 }
