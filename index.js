@@ -85,6 +85,7 @@ async function getConversations(offset = 0) {
 await getConversations();
 
 
+console.log('messageBodies', messageBodies.length)
 const csv = messageBodies.join('\n');
 
 try {
