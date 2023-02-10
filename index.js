@@ -16,6 +16,7 @@ let messageBodies = []
 const pushMessageBody = (messageId, text) => {
   if (!text) {
     console.log('no text for message Id', messageId);
+    return;
   }
 
   if (text.includes('Goed dat je even een berichtje')) {
