@@ -70,10 +70,9 @@ async function getConversations(offset = 0) {
 
   console.log('converastions', { totalCount: json.totalCount, offset: json.offset, limit: json.limit })
 
-  const messages = json.items.map(item => item.id).map(id => getMessages(id));
 
   await Promise.all(
-    messages
+    json.items.map(item => item.id).map(id => getMessages(id))
   );
 
   const hasNextPage = (offset + json.count) < json.totalCount;
