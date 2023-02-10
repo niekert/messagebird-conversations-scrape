@@ -13,9 +13,19 @@ if (!API_KEY) {
 
 let messageBodies = []
 
-const pushMessageBody = (messageId, text) => {
+
+const pushMessageBody = (message) => {
+  let text;
+  if (message.type === 'text') {
+    text = message.content.text;
+  } else if (message.type === 'email') {
+    text = message.content.html;
+  } else {
+    return
+  }
+
   if (!text) {
-    console.log('no text for message Id', messageId);
+    console.log('no text for message Id', message);
     return;
   }
 
@@ -27,9 +37,8 @@ const pushMessageBody = (messageId, text) => {
   const withoutNewline = text.replaceAll('\n', '');
 
   appendFileSync("./result.csv", `${withoutNewline} \n`);
-  messageBodies.push(withoutNewline);
+  messageBodies.push(withoutNewline);  
 }
-
 
 async function getMessages(conversationId, offset = 0) {
   console.log('getting messages for conversation', conversationId, 'with pagination', offset);
@@ -42,14 +51,7 @@ async function getMessages(conversationId, offset = 0) {
 
 
   for (let message of json.items) {
-    if (message.type === 'text') {
-      pushMessageBody(message.id, message.content.text);
-    }
-
-    // todo
-    if (message.type === 'email') {
-      pushMessageBody(message.id, message.content.text ?? message.content.html);
-    }
+    pushMessageBody(message);
   }
 
 
