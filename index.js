@@ -13,8 +13,10 @@ if (!API_KEY) {
 
 let messageBodies = []
 
-const pushMessageBody = text => {
-  if (!text) return;
+const pushMessageBody = (messageId, text) => {
+  if (!text) {
+    console.log('no text for message Id', messageId);
+  }
 
   if (text.includes('Goed dat je even een berichtje')) {
     console.log('skipping standard message')
@@ -40,12 +42,12 @@ async function getMessages(conversationId, offset = 0) {
 
   for (let message of json.items) {
     if (message.type === 'text') {
-      pushMessageBody(message.content.text);
+      pushMessageBody(message.id, message.content.text);
     }
 
     // todo
     if (message.type === 'email') {
-      pushMessageBody(message.content.text);
+      pushMessageBody(message.id, message.content.text ?? message.content.html);
     }
   }
 
