@@ -19,7 +19,7 @@ const pushMessageBody = (message) => {
   if (message.type === 'text') {
     text = message.content.text;
   } else if (message.type === 'email') {
-    text = message.content.text ?? message.content.html;
+    text = message.content.email.text ?? message.content.email.html;
   } else {
     return
   }
