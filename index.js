@@ -75,7 +75,7 @@ async function getConversations(offset = 0) {
 
   const hasNextPage = (offset + json.count) < json.totalCount;
   if (hasNextPage) {
-    await getConversations(conversationId, offset + LIMIT);
+    await getConversations(offset + LIMIT);
   }
 }
 
