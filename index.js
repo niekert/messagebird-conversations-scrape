@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { appendFileSync } from 'fs';
+import { appendFileSync, writeFileSync } from 'fs';
 
 const API_KEY = process.env.MB_API_KEY;
 
@@ -85,13 +85,10 @@ async function getConversations(offset = 0) {
 await getConversations();
 
 
-// const csv = messageBodies.join('\n');
+const csv = messageBodies.join('\n');
 
-// console.log('written to result.csv');
-
-
-// try {
-//   writeFileSync("./result.csv", csv);
-// } catch (err) {
-//   console.error(err);
-// }
+try {
+  writeFileSync("./result2.csv", csv);
+} catch (err) {
+  console.error(err);
+}
