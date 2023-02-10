@@ -30,7 +30,7 @@ const pushMessageBody = text => {
 
 async function getMessages(conversationId, offset = 0) {
   console.log('getting messages for conversation', conversationId, 'with pagination', offset);
-  const resp = await fetch(`${CONVERSASTIONS_API_URL}/conversations/${conversationId}/messages?limit=${LIMIT}&${offset ? offset : ''}`, {
+  const resp = await fetch(`${CONVERSASTIONS_API_URL}/conversations/${conversationId}/messages?limit=${LIMIT}&offset=${offset}`, {
     headers: {
       Authorization: `AccessKey ${API_KEY}`
     }
@@ -60,7 +60,7 @@ async function getMessages(conversationId, offset = 0) {
 async function getConversations(offset = 0) {
   console.log('getting conversations offset', offset);
 
-  const resp = await fetch(`${CONVERSASTIONS_API_URL}/conversations?limit=${LIMIT}&${offset}`, {
+  const resp = await fetch(`${CONVERSASTIONS_API_URL}/conversations?limit=${LIMIT}&offset=${offset}`, {
     headers: {
       Authorization: `AccessKey ${API_KEY}`
     }
