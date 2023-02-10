@@ -14,6 +14,7 @@ if (!API_KEY) {
 let messageBodies = []
 
 const pushMessageBody = text => {
+  if (!text) return;
 
   const withoutNewline = text.replaceAll('\n', '');
 
@@ -33,11 +34,14 @@ async function getMessages(conversationId, offset = 0) {
 
   for (let message of json.items) {
     if (message.type === 'text') {
+      console.log('textMsgText', message.content.text);
       pushMessageBody(message.content.text);
     }
 
     // todo
     if (message.type === 'email') {
+      console.log('emailText', message.content.text)
+
       pushMessageBody(message.content.text);
     }
   }
