@@ -78,7 +78,9 @@ await getConversations();
 
 const csv = messageBodies.join('\n');
 
-console.log(messageBodies, csv);
+console.log('written to result.csv');
+
+
 try {
   appendFileSync("./result.csv", csv);
 } catch (err) {
